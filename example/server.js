@@ -75,7 +75,7 @@ function initWebRtc(socket){
   var sendMessage = function( messageName, data ) {
     socket.emit(messageName, data);
   };
-  kurentoGroupCall.start('ws://147.75.97.77:8888/kurento', sessionId,
+  kurentoGroupCall.start('ws://54.224.156.166:8888/kurento', sessionId,
       sendMessage);
   socket.on('error', function(error){
     kurentoGroupCall.onError(error, sessionId);

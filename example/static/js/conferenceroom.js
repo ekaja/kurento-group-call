@@ -254,9 +254,14 @@ function onExistingParticipants(msg) {
   var participant = new Participant(currentUserId);
   participants[currentUserId] = participant;
   var video = participant.getVideoElement();
-  participant.rtcPeer = kurentoUtils.WebRtcPeer.startSendOnly(video,
-            participant.offerToReceiveVideo.bind(participant), null,
-            constraints);
+  participant.rtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendonly({
+      localVideo: video,
+      mediaConstraints: constraints,
+      onicecandidate: participant.offerToReceiveVideo.bind(participant)
+    });
+  // participant.rtcPeer = kurentoUtils.WebRtcPeer.startSendOnly(video,
+            // participant.offerToReceiveVideo.bind(participant), null,
+            // constraints);
   msg.data.forEach(receiveVideo);
 }
 
@@ -279,8 +284,11 @@ function receiveVideo(sender) {
     var participant = new Participant(sender);
     participants[sender] = participant;
     var video = participant.getVideoElement();
-    participant.rtcPeer = kurentoUtils.WebRtcPeer.startRecvOnly(video,
-            participant.offerToReceiveVideo.bind(participant));
+    participant.rtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly({
+      localVideo: video,
+      // mediaConstraints: constraints,
+      onicecandidate: participant.offerToReceiveVideo.bind(participant)
+    });
 }
 
 function onParticipantLeft(request) {
